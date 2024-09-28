@@ -1,0 +1,37 @@
+Shared Storage 
+--------------
+
+A process is a program in execution, and each proces has its own address space, which comprise the memory locations that the process is allowed to access.
+A process has one or more threads of execution, which are sequences of executable instructions.
+There can be single-threaded or multi-threaded processes. Threads within a process shared various resources, in particular, address space.
+
+Threads within a process can communicate straightforwardly through shared memory.
+Different processes don't share memory by default.
+
+Some of the ways to launch processes that can communicate:
+
+1. Different terminals can be used to start different processes.
+2. "fork" system call within one process can be used to spawn another process (the child).
+
+Shared files are the most basic IPC mechanisms to have. One process (producer) creates and writes to a file, and another process (consumer) reads from this same file:
+
+The main challenge in using IPC mechanism is that a race condition might arise.
+Where producer and consumer might access the file at exactly the same time, thereby making the outcome indeterminate.
+
+To avoid this race condition, the file must be locker in a way the prevents a conflict b/w a write operation and another operation.
+
+The locking API in the standard system library can be summarized as follows:
+
+- A producer should gain an exclusive lock on the file before writing to file. An exclusive lock can be held by one process at most, which rules out a race condition 
+because no other process can access the file until the lock is released.
+
+- Consumer should gain at least a shared lock on the file before reading from the file. Multiple readers can hold a shared lock at the same time, but no write can 
+access a file when even a single reader holds a shared lock.
+
+A shared lock promotes efficiency. If one process is just reading a file and not changing it's contents, there is not reason to prevent other processes from reading.
+
+Standard I/O library utility function named fcntl can be used to inspect and manipulate both exclusive and shared locks on a file.
+A file descriptor ( non-negative integer value) identifies a file. 
+
+For file locking, linux uses library function flock, which is a thin wrapper around fcntl. 
+
