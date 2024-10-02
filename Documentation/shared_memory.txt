@@ -27,3 +27,7 @@ a mutial exclusion construct.
 The shared-memory example uses a semaphore as a mutex.
 When the semaphore's value is 0, the mwriter alone can access the shared memory.
 After writing, this process increments the semaphore's value, thereby allowing the memreader to read the shared memory.
+
+sem_post()
+sem_post()  increments  (unlocks) the semaphore pointed to by sem.  If the semaphore's value consequently becomes greater than zero, then another process or thread blocked in a sem_wait(3) call will
+       be woken up and proceed to lock the semaphore.

@@ -1,3 +1,4 @@
+/** For compilation: gcc mwriter.c -o mwriter -lrt -lpthread **/
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
