@@ -1,0 +1,29 @@
+Shared Memory
+-------------
+
+The Linux system provide two seperate APIs for shared memory:
+1. The legacy System V API
+2. Recent POSIX api
+
+These APIs should never be mixed in a single application.
+Shared memory under POSIX can be configured without a backing file, but this may impact portability.
+
+The POSIX API can be used with a backing file, which combines the benefits of memory access (speed) and file storage (peristence).
+
+Examples;  mwriter and mreader uses semaphore to cordinate their access to the shared memory.
+
+Whenever we talk about shared memory, there is a risk of memory-based race condition.
+Hence, the semaphore is used to coordinate (synchronize) access to the shared memory.
+
+Sempaphores
+-----------
+
+A general semaphore also is called a counting semaphore, as it has a value that can be incremented.
+
+A binary semaphore is a special case requiring only two values: 0 and 1. In this case, a semaphore acts as a mutex:
+
+a mutial exclusion construct.
+
+The shared-memory example uses a semaphore as a mutex.
+When the semaphore's value is 0, the mwriter alone can access the shared memory.
+After writing, this process increments the semaphore's value, thereby allowing the memreader to read the shared memory.
