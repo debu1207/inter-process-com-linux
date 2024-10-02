@@ -1,0 +1,20 @@
+PIPES and MESSAGE QUEUES
+------------------------
+
+Pipes are channels that connect processes for communication. 
+A channel has a write end for writing bytes, and a read end for reading these bytes in FIFO order.
+One process writes to the channel, and a different process reads from this same channel.
+
+There are two types of pipes: "named" and "unnamed". And they can be used either interactively from the command like or within programs.
+
+The pipes and memory queues use POSIX APIs like mq_open().
+
+mq_open() creates a new POSIX message queue or opens an existing queue.  The queue is identified by name.
+
+mqd_t mq_open(const char *name, int oflag, mode_t mode,
+                     struct mq_attr *attr);
+
+Man page of mq_open() function => (https://man7.org/linux/man-pages/man2/mq_open.2.html) shows the atributes.
+The value MT_Safe means that the mq_open function is thread safe. The MT-Safe attribute assures that a race condition does not arise in invocation of mq_open.
+(Channel based IPC is concurrent-safe)
+       
