@@ -17,4 +17,41 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode,
 Man page of mq_open() function => (https://man7.org/linux/man-pages/man2/mq_open.2.html) shows the atributes.
 The value MT_Safe means that the mq_open function is thread safe. The MT-Safe attribute assures that a race condition does not arise in invocation of mq_open.
 (Channel based IPC is concurrent-safe)
-       
+
+Unnamed pipes
+-------------
+On all morder systems, the vertical bar | represents an unnamed pipe at the command line.
+Consider below example command:
+
+$ sleep 5 | echo "hello, world!" ## writer to the left |, reader to the right
+
+The unnamed pipe persists until both the writer and the reader terminate.
+
+In the example above, the sleep process doesn't write any bytes to the channel but does terminate after about five seconds, which sends an 'end-of-stream marker'
+to the channel. Meanwhile, the echo process immediately writes the greeting to the standard output because this process does not read any bytes from the channel,
+so it does no waiting.
+
+fork syscall
+------------
+
+#include <sys/types.h>
+#include <unistd.h>
+
+fork() creates a new process by duplicating the calling process. The new process is referred to as the child process. The calling process is referred to as the parent 
+process.
+The child process and the parent process run in separate memory spaces. At the time of fork() both memory spaces have the same content.
+Memory writes, fiel mappings and unmappings performed by one of the processes do not affect the other.
+
+Return value:
+On success, the PID of the child process is returne in the parent, and 0 is returne in the child. On failure, -1 is returned in the parent, no child process is created, 
+and errorno is set appropriately.
+
+A successful call to fork returns:
+- Zero to the child process
+- The child's process ID to the parent
+
+An if/else or equivalent construct is used after a successful fork call to segregate code meant for the parent from code meant for child.
+
+When the parent process terminates before the child, the child becomes and remains a zombie process with an entry in the process table.
+
+On linux systems, PIPE_BUF is 4096 bytes in size.
