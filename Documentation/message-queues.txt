@@ -1,0 +1,6 @@
+Message Queues
+--------------
+
+- Pipes have strict FIFO behavior => first byte written is the first byte read.
+- Message queues can behave in the same way but are flexible enough that byte chunks can be retrieved out of FIFO order.
+

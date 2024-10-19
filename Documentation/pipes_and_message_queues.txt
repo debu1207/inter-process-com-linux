@@ -55,3 +55,16 @@ An if/else or equivalent construct is used after a successful fork call to segre
 When the parent process terminates before the child, the child becomes and remains a zombie process with an entry in the process table.
 
 On linux systems, PIPE_BUF is 4096 bytes in size.
+
+
+Named Pipes
+----------
+Unnamed pipes has no backing file: the system maintains a in-memory buffer to transfer bytes from the writer to the reader. Once the writer and reader terminate, the buffer 
+is reclaimed.
+
+But named pipes has a bakcing file and a distinct API.
+
+There is a library function named mkfifo that creates a named pipe in programs.
+
+The system reclaims the backing file once every process connected to the pipe has performed the unlink 
+
